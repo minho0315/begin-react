@@ -1,7 +1,11 @@
 import React from 'react';
 
-function Hello() {
-    return <div>안녕하세요</div>
+function Hello({color, name}) {
+    return <div style={{color}}>안녕하세요 {name}</div>
 }
 
-export default Hello;  //Hello라는 컴포넌트를 내보내겠다
+Hello.defaultProps = {
+    name: '이름없음'
+}
+
+export default Hello; 
