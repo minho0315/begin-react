@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'; //브라우저에 있는 실제 DOM 내부에 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Counter from './Counter';
 
 ReactDOM.render(
   <React.StrictMode>
