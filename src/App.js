@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useCallback } from "react";
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
 
@@ -13,13 +13,13 @@ function App() {
     email: "",
   });
   const { username, email } = inputs;
-  const onChange = (e) => {
+  const onChange = useCallback(e => {
     const { name, value } = e.target;
-    setInputs({
+    setInputs(inputs => ({
       ...inputs,
       [name]: value,
-    });
-  };
+    }));
+  },[]);
 
   const [users, setUsers] = useState([
     {
@@ -43,33 +43,34 @@ function App() {
   ]);
 
   const nextId = useRef(4);
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
       email,
     };
-    setUsers(users.concat(user));
+    setUsers(user => users.concat(user));
     //setUsers([...user,user]);
     setInputs({
       username: "",
       email: "",
     });
     nextId.current += 1;
-  };
+  }, [username, email]);
 
-  const onRemove = (id) => {
+  const onRemove = useCallback(id => {
     // user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
     // =user.id 가 id인 것을 제거함
-    setUsers(users.filter((user) => user.id !== id));
-  };
-  const onToggle = id => {
-    setUsers(
+    setUsers(users => users.filter(user => user.id !== id));
+  },[]);
+  const onToggle =useCallback(id => {
+    setUsers(user=>
       users.map(user =>
         user.id === id ? {...user, active: !user.active} : user
         )
     );
-  };
+  },
+  []);
   const count = useMemo(() => countActiveUsers(users),[users]);
   return (
     <>
